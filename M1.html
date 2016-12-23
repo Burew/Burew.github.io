@@ -1,0 +1,76 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8"> 
+		<title>MyApp</title>
+			<!--Any external file links, scripts/css gohere -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+	</head>
+	<style>
+		body{
+		font-family: Arial;
+		}
+		
+		#title{
+		font-size:24px;
+		width:100%;
+		text-align:center;
+		margin-top:20px;
+		margin-bottom:30px;
+		}
+		
+		h1{
+			color:red;
+			text-align:center;
+		}
+		
+	</style>
+	<body>
+		<!-- Aight, get started!!!-->
+		
+		<div id="title">MyApp</div>
+		<h1>REMEMBER TO USE BOOTSTRAP TO SAVE WORK ON STYLING</h1>
+		
+		
+	</body>
+	<script>
+	<!-- Our JS will go here-->
+	<!-- API key is: AIzaSyDNm2XuW3_pDlDTONs28J0gXqQmtPTN2ZM -->
+		$(document).ready(function(){
+			$('#title').text('Hello World!!!');
+			});
+		var locationList = []
+		
+		console.log('Page almost loaded!');
+		
+		function handler(JSONdata){
+			console.log(JSONdata);
+			}
+		//$.getJSON('https://crossorigin.me/https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=33.640,-117.844&rankby=distance&types=food&key=AIzaSyDNm2XuW3_pDlDTONs28J0gXqQmtPTN2ZM');
+		
+		/*
+		https://crossorigin.me/https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=33.640,117.844&rankby=distance&types=food&key=AIzaSyDNm2XuW3_pDlDTONs28J0gXqQmtPTN2ZM
+-
+		*/
+		
+		$.getJSON('https://crossorigin.me/https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=33.640,-117.844&rankby=distance&types=food&key=AIzaSyDNm2XuW3_pDlDTONs28J0gXqQmtPTN2ZM', 
+			function(data){
+				console.log('stuff happening.../n');
+				console.log(data);
+				console.log(data.results)
+				//UCI's location hard-coded as a starting pt
+				
+				//loop through data received
+				for (var i = 0; i < data.results.length ; i++){
+					console.log(data.results[i].name);
+					console.log(data.results[i].geometry.location.lat);
+					console.log(data.results[i].geometry.location.lng);
+					locationList.push([data.results[i].name,
+										data.results[i].geometry.location.lat, 
+										data.results[i].geometry.location.lng]);
+				}
+		});
+		
+	</script>
+	
+</html>
