@@ -5,14 +5,34 @@
 		<title>MyApp</title>
 			<!--Any external file links, scripts/css gohere -->
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+		<!-- Latest compiled and minified CSS -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+		<!-- Optional theme -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+		<!-- Latest compiled and minified JavaScript -->
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+		
+		<!-- old english font-->
+		<link href="https://fonts.googleapis.com/css?family=IM+Fell+English" rel="stylesheet">
+		
 	</head>
 	<style>
+	
+	      /* Optional: Makes the sample page fill the window. */
+		html, body {
+			height: 75%;
+			margin: 0;
+			padding: 0;
+		}
+	  
 		body{
-		font-family: Arial;
+			font-family: Arial;
 		}
 		
 		#title{
-		font-size:24px;
+		
 		width:100%;
 		text-align:center;
 		margin-top:20px;
@@ -20,51 +40,802 @@
 		}
 		
 		h1{
-			color:red;
 			text-align:center;
 		}
 		
+		#map {
+        height: 100%;
+		}
+	  
+		#findRestButton{
+		font-family: 'IM Fell English', serif;
+		margin-left: 40%;
+		}
+		
+	  		
 	</style>
 	<body>
-		<!-- Aight, get started!!!-->
+		<!-- class="label label-info" -->
+		<h1 id="title"><span class="label label-default"> MyRestaurantFinder </span></h1>
+		<h1 id = "resultText">Click the button below to get started:</h1>
+		<br/>
+		<div id = 'map'></div> <!-- map will go here-->
+		<br/>
 		
-		<div id="title">MyApp</div>
-		<h1>REMEMBER TO USE BOOTSTRAP TO SAVE WORK ON STYLING</h1>
+		<!-- img id = 'test' src = "http://gpa-portal.com/wp-content/uploads/2016/02/rsz_dt7jydn8c.png"/ -->
+		<br/>
+		<input type="button" class="btn btn-lg btn-info" value="Suggest a place!" id="findRestButton">
+
+		<script>
+		
+		var testData = {
+   "html_attributions" : [],
+   "next_page_token" : "CoQC_gAAAO314p1q6gs-mQRGtbilkkA_EpUq7CoVaX-ksYL49j05vnu5tOcwi8rXOMlNwg8ykE_SnuihP0-8h2ywxDtOY3yyfvBXuBL40MzyWsOGcbmFCf61tZqS1dLJ0OXPEPu3ajV39hutrBlJnbfwOIJkCOsDIp2prVc7SBBpLj0SkBtdO7KDujb_319xNDUoS8E-mmY48KFfsAjDglRpxpbV_G9W1gXT1nJW6eEyqwNgcnnN2NdercJuOrVIgBRjkkX6c3IIqDV6weOcloFJJlpBxI1QH7KGzMkrgSmOzQiIa_QID1qWBrZZUG3avhSYfPNRsg-nCZn9lQ3J7TmcBoOiTKMSECeMrpxP6ZI6w7EfbUdouYsaFKZS80yZeXMsJh0WBXWPFIV83js5",
+   "results" : [
+      {
+         "geometry" : {
+            "location" : {
+               "lat" : 33.6438715,
+               "lng" : -117.8435374
+            }
+         },
+         "icon" : "https://maps.gstatic.com/mapfiles/place_api/icons/cafe-71.png",
+         "id" : "ad558cc99dc3bd60713df7b461eebd83eb64b985",
+         "name" : "Cafe Espresso",
+         "opening_hours" : {
+            "open_now" : true,
+            "weekday_text" : []
+         },
+         "photos" : [
+            {
+               "height" : 3024,
+               "html_attributions" : [
+                  "\u003ca href=\"https://maps.google.com/maps/contrib/106888845390399130293/photos\"\u003eDmitri Arkhipov\u003c/a\u003e"
+               ],
+               "photo_reference" : "CoQBdwAAAFj77ILGaptvUHuOFO_MqJRKIeOi_3ugn9GGbtwG15Sbevelc6F1C8XsuYn5L6_oHPwvRC30JPYt5Y92Ttl5ODOaY5BFXxhP_O7OI09jYR20srP2XVPUjLgrFtJPZJ8E0AYnKlvhw7NaML9p2wSfITuiEiKEajcdnInmwfWrXjucEhChIbjrcr761SnQXCGWXffAGhSmVTideGVVSrdZh1nolXFJ8MYnYw",
+               "width" : 4030
+            }
+         ],
+         "place_id" : "ChIJReNYIxDe3IARuX5wTkgHY2k",
+         "rating" : 4,
+         "reference" : "CmRRAAAAJdA9lXaDL1tI1EEDRV-eYH5_pwh2Aqd-LkoeODLKecDTR5DVBqOW6XHywpU1MRSKj88g5PLTTsNpWxnzek8PXmafemaJeCrecD4ocxgUYKwzcWvd7ROeq_ZjbVCH-uAIEhCwRMupNvgMBIrnGCYMIw18GhSbt9_410MgA5KOOrDlejP3aKmdFw",
+         "scope" : "GOOGLE",
+         "types" : [ "cafe", "food", "point_of_interest", "establishment" ],
+         "vicinity" : "Irvine"
+      },
+      {
+         "geometry" : {
+            "location" : {
+               "lat" : 33.6434305,
+               "lng" : -117.841121
+            },
+            "viewport" : {
+               "northeast" : {
+                  "lat" : 33.64348485000001,
+                  "lng" : -117.84101225
+               },
+               "southwest" : {
+                  "lat" : 33.64326744999999,
+                  "lng" : -117.84115725
+               }
+            }
+         },
+         "icon" : "https://maps.gstatic.com/mapfiles/place_api/icons/cafe-71.png",
+         "id" : "94a66e73adb22443c66b74a19b086a7ee281c891",
+         "name" : "Java City",
+         "opening_hours" : {
+            "open_now" : true,
+            "weekday_text" : []
+         },
+         "photos" : [
+            {
+               "height" : 3024,
+               "html_attributions" : [
+                  "\u003ca href=\"https://maps.google.com/maps/contrib/106888845390399130293/photos\"\u003eDmitri Arkhipov\u003c/a\u003e"
+               ],
+               "photo_reference" : "CoQBdwAAABGofrrsO1opBG2k5IPUCCia-Ce0vi5o4pAnKomZMO2WaiZNFLm_sKo4Y7yc8kkK2Od-CZGeCBI9i-XWCtB5dp0OWkxGRyFFYmW7TRF5hhshgDV74Ci_Y9-u65ajuWY0wtCxqtboybWWWgt8wrBoaIFBsXnUmTiloSTychtFIashEhCbTQ9D7K3QRd7DBQhVSg0jGhSG7SXZaFaWE5NCM2w7eLcHlJEImA",
+               "width" : 4032
+            }
+         ],
+         "place_id" : "ChIJUdnqjQ_e3IAR-y29wMb0ty8",
+         "rating" : 3.7,
+         "reference" : "CmRRAAAAl_M-e-oJspK7M_jIoH-bUbS9ppaM1zITzDn0zJ8LGX-pkBdA7bBhkR9Tky0JKtUwUBjPAhR4tLcTS0fdN0bJJldWoPqRunU_lMxL3zOFsoKpVdqt3cNpwjRCiK6Oa1HFEhBQp4uGc22H42ONU3OoXqgIGhTr4ghhX5kYxaAN91xzpTHVYZYl_w",
+         "scope" : "GOOGLE",
+         "types" : [ "cafe", "food", "point_of_interest", "establishment" ],
+         "vicinity" : "2004 Los Trancos Drive, Irvine"
+      },
+      {
+         "geometry" : {
+            "location" : {
+               "lat" : 33.6459199,
+               "lng" : -117.8444181
+            },
+            "viewport" : {
+               "northeast" : {
+                  "lat" : 33.64592069999999,
+                  "lng" : -117.8441436
+               },
+               "southwest" : {
+                  "lat" : 33.6459175,
+                  "lng" : -117.8445096
+               }
+            }
+         },
+         "icon" : "https://maps.gstatic.com/mapfiles/place_api/icons/restaurant-71.png",
+         "id" : "7b921cdbcfa6993f47d52638adbbbddba30debd2",
+         "name" : "BC's Cavern Food Court",
+         "opening_hours" : {
+            "open_now" : true,
+            "weekday_text" : []
+         },
+         "photos" : [
+            {
+               "height" : 3024,
+               "html_attributions" : [
+                  "\u003ca href=\"https://maps.google.com/maps/contrib/106888845390399130293/photos\"\u003eDmitri Arkhipov\u003c/a\u003e"
+               ],
+               "photo_reference" : "CoQBdwAAANTdotynZGC6gZi_tKEl3UwUxJkn_b5IWxuir2Eu0sfynSyua5el5ZS5ux3PnCud90QuEUyM7IZtu-6mS7ipNyiovwqHuTTYrsaaiYYD1AUBhZB8lRSMfCBqrt-Fk0xkT2FnjnfEpXyG25stVCXJ-BsZDEqeUkY1gyAI3wWX9iiOEhDpivMDMUq5-u5gXTMTQ9SaGhTgJzUnjfXeQRrmA1AHgUixn0F_Fg",
+               "width" : 4032
+            }
+         ],
+         "place_id" : "ChIJdxrgvxHe3IARhxDAGh1KVPM",
+         "reference" : "CmRSAAAAs84nujctsFe_wNWysPKIYZ_7oKXY4q3F_3j9LYxD6TjPi_Q26P_VLAsH8KKcnX0EvctF83nut9lzbpnTAe5jJmwAOvvCefTMl7z9dbUh6YlkPlhbZpB8H7VgH1p5dCJJEhBQO4N_YmIzvvrDkTodj5IQGhTw4OJIQFD9Hqp_l1A1qa-nulyklA",
+         "scope" : "GOOGLE",
+         "types" : [ "food", "point_of_interest", "establishment" ],
+         "vicinity" : "500, Inner Ring Road, Irvine"
+      },
+      {
+         "geometry" : {
+            "location" : {
+               "lat" : 33.6459433,
+               "lng" : -117.8444929
+            }
+         },
+         "icon" : "https://maps.gstatic.com/mapfiles/place_api/icons/restaurant-71.png",
+         "id" : "17dc405d4477691333d1729be5c4cafd9f46c80f",
+         "name" : "SUBWAY",
+         "opening_hours" : {
+            "open_now" : true,
+            "weekday_text" : []
+         },
+         "photos" : [
+            {
+               "height" : 1936,
+               "html_attributions" : [
+                  "\u003ca href=\"https://maps.google.com/maps/contrib/101837198886859904105/photos\"\u003ePatrick Gustafson\u003c/a\u003e"
+               ],
+               "photo_reference" : "CoQBdwAAAFgtiB-WpGHYCFeJBEVdwrS6siVccpQV0nNXveGBL_6zFu08zvwaFdf47Cabl8zsviq9IdOxgV4HbkSlyOdnDKJ4Y24128XM9J5drFf049vhlcWTZn5Vtx3XENbRw8-5pv5rXybtpzte5RsApRJ1UbIKJJYG3u0KMdh0gtNxO_uDEhDGaecWCIsFfgjjMkYpQtQPGhS-sY-zQ-2kHoYK4H1qNmB64NOnqw",
+               "width" : 2592
+            }
+         ],
+         "place_id" : "ChIJVVVVBQ7e3IARnupjIBYZkKk",
+         "price_level" : 1,
+         "reference" : "CmRSAAAA5sk3oU6gvWTML4ZBoC-VV37G0sNwWcLb0Rqa0dd2_vMgesh7h-np0qO9svySGKEfTihqF-6wvIXNMwpYsjdL1pJdC4B-hqNPsojzZPcGxZ3yErFi0MyzdWMZ0lNPmX56EhDqzZESwWbFwbnLIHQB0dGhGhQ1R9k1ALYR0n6jFz-Wpmpj1iXL9g",
+         "scope" : "GOOGLE",
+         "types" : [ "restaurant", "food", "point_of_interest", "establishment" ],
+         "vicinity" : "501 Mesa Road, Irvine"
+      },
+      {
+         "geometry" : {
+            "location" : {
+               "lat" : 33.6455379,
+               "lng" : -117.8406328
+            }
+         },
+         "icon" : "https://maps.gstatic.com/mapfiles/place_api/icons/restaurant-71.png",
+         "id" : "7e548f3945dd4a4ad8828160134d220e453f1aef",
+         "name" : "Einstein Bros. Bagels",
+         "opening_hours" : {
+            "open_now" : true,
+            "weekday_text" : []
+         },
+         "photos" : [
+            {
+               "height" : 2988,
+               "html_attributions" : [
+                  "\u003ca href=\"https://maps.google.com/maps/contrib/112764855181810480442/photos\"\u003eZachery Robinson\u003c/a\u003e"
+               ],
+               "photo_reference" : "CoQBdwAAAIUOZ9xby9ZmIU6JsmVN6KvQizFspXobekr_LK-8M40MMYbbAQw7-v7g3IdHnNUOrlo1_yoLuE-7LfQYaMKm3f9VYzJafMfepc2l2zyfrptCG6IDuW4RTHWeR0fh4FZfkcLv-WTbYOrbGUHoSd8stiUKY0TKTjJ79-dU1H5apSJSEhA1GdGq4fOgdM65UvKKZjDnGhRN-98asOMHsA8jR6KmPxngOpMpqQ",
+               "width" : 5312
+            }
+         ],
+         "place_id" : "ChIJicmg9A3e3IARuEC4UrL0XKk",
+         "price_level" : 1,
+         "reference" : "CmRSAAAAF6g5sqOR0B3jcRa5Lto9Oy3q_f97sQa6lt1XqDfG-f3zV6ASZXLKi-q9ILrZH7azUrsKxxViV5xBlx3W1W42-VPiwdGhJt1Nce880FwtxQnJ_26TOVXlIz5rQ8FsR8sxEhBe_OxrL3IfyYDEigQlWzw0GhTWEkPbTcaiVSYr1MPhFfZndkkOoQ",
+         "scope" : "GOOGLE",
+         "types" : [
+            "bakery",
+            "cafe",
+            "restaurant",
+            "food",
+            "store",
+            "point_of_interest",
+            "establishment"
+         ],
+         "vicinity" : "G318 Student Center, Bldg 204, Irvine"
+      },
+      {
+         "geometry" : {
+            "location" : {
+               "lat" : 33.6456039,
+               "lng" : -117.8407073
+            },
+            "viewport" : {
+               "northeast" : {
+                  "lat" : 33.6457874,
+                  "lng" : -117.8392286
+               },
+               "southwest" : {
+                  "lat" : 33.64505339999999,
+                  "lng" : -117.8412002
+               }
+            }
+         },
+         "icon" : "https://maps.gstatic.com/mapfiles/place_api/icons/restaurant-71.png",
+         "id" : "c6fae2efeb858819ef9020f97d7b14a6b2d5c311",
+         "name" : "Phoenix Food Court",
+         "opening_hours" : {
+            "open_now" : false,
+            "weekday_text" : []
+         },
+         "photos" : [
+            {
+               "height" : 3024,
+               "html_attributions" : [
+                  "\u003ca href=\"https://maps.google.com/maps/contrib/106888845390399130293/photos\"\u003eDmitri Arkhipov\u003c/a\u003e"
+               ],
+               "photo_reference" : "CoQBdwAAAAb53EE_jSxed249OAh5xgrwfk5hgio4AqYSW5C7YA1fSNihSVLHiqpv3Dn20iZ3yVdsEyStx3WY3dTItamqWO2rPlHC1nwskactE5lAUnyEVhWWzoYk6ZZSRbMbLCRYp94Tlx7mMPAYW85IRbrqwna9BdEWz87oJaexAMLXpgRaEhC2be6he1h8pLgfkvs8zq0uGhSfGrYENBKsaR2nFFb3Y6aHc9LiMg",
+               "width" : 4030
+            }
+         ],
+         "place_id" : "ChIJ_elcTQ7e3IARTf0uv4grOZc",
+         "reference" : "CmRSAAAAec4_8eBikKp5O2sfie-DpFuWlF0kq83hpQKauNB2J0lpzb-vi0Q7GcTFFIrkRUrLVlNP3ZYwaN_7vQNoOGH7ZOnLyILHaZSZodg3zo-f1_KnRPtHaVy83xcin9NFBrktEhBue1Ss3InJBqLCaYmu1quSGhReRUlPtWFtfzTjInifVB3JSQ2VKg",
+         "scope" : "GOOGLE",
+         "types" : [ "restaurant", "food", "point_of_interest", "establishment" ],
+         "vicinity" : "Ring Road, Irvine"
+      },
+      {
+         "geometry" : {
+            "location" : {
+               "lat" : 33.6455079,
+               "lng" : -117.8391355
+            },
+            "viewport" : {
+               "northeast" : {
+                  "lat" : 33.6459432,
+                  "lng" : -117.8391128
+               },
+               "southwest" : {
+                  "lat" : 33.6453628,
+                  "lng" : -117.8392036
+               }
+            }
+         },
+         "icon" : "https://maps.gstatic.com/mapfiles/place_api/icons/restaurant-71.png",
+         "id" : "49e5e448b1ccd3fe564c7e921256a76816a6b50b",
+         "name" : "Brandywine Commons",
+         "opening_hours" : {
+            "open_now" : true,
+            "weekday_text" : []
+         },
+         "photos" : [
+            {
+               "height" : 3120,
+               "html_attributions" : [
+                  "\u003ca href=\"https://maps.google.com/maps/contrib/110738583192466703708/photos\"\u003eHaven King\u003c/a\u003e"
+               ],
+               "photo_reference" : "CoQBdwAAAAKtgdHQJa9nCDxDIegbqjbDbcghQIXaoTe-EQKui35uxNSziUoX2zyyQhVqJME_6t-P4d9xnK2pS_OFC66bxhnCVtzMpPmK8mv2PfljwECH9cB8z2zxzxJas0b-dOP7w6nUh6t48aEgU7s9tvErFvsNS7_wcaivuaexlwT7sq2NEhAfouPU0eANhIeAhLm4zrzOGhRKbIMvL1rpM5utcm8MmEe7vCPr9w",
+               "width" : 4160
+            }
+         ],
+         "place_id" : "ChIJIdc4Gw_e3IARAT8ElFVAh08",
+         "reference" : "CmRRAAAAh_WtSmizU7GIypngzMV_rFIr9xZ7Z30p1OhVnPp--a5BFVnpH74Tjwaw9xh91OLCTw-HxJSpW4IvCayxlIJp9mhc0-ZhHNmG9iM-1_2GwPdUAjTdBi6_E8itdlF_tZ2wEhDQ78UCGdCaSdviua6xo5YdGhScGONqpz8wqVmW36VfJ9naNBmsWQ",
+         "scope" : "GOOGLE",
+         "types" : [ "restaurant", "food", "point_of_interest", "establishment" ],
+         "vicinity" : "Brandywine Road, Irvine"
+      },
+      {
+         "geometry" : {
+            "location" : {
+               "lat" : 33.6456436,
+               "lng" : -117.8390145
+            },
+            "viewport" : {
+               "northeast" : {
+                  "lat" : 33.64594465,
+                  "lng" : -117.8335215
+               },
+               "southwest" : {
+                  "lat" : 33.64474045,
+                  "lng" : -117.8408455
+               }
+            }
+         },
+         "icon" : "https://maps.gstatic.com/mapfiles/place_api/icons/restaurant-71.png",
+         "id" : "59b05989963f6664e17abe2710fc21f8ed9a5ce2",
+         "name" : "Brandywine dining hall",
+         "place_id" : "ChIJPWXKNQ_e3IARpe7Z7-BJPvM",
+         "reference" : "CmRSAAAA4xw40wTj66gDoEnZVhTYBh9fu41FEKMQJADABpygvr1UECgo_xKfF8f89DB-9b7OTe82AjGRjZx6ZsCpSMnYVOSIyvJwZDIT6rLW-LSSIXyohyPNUnzE2YiG1Lyc_V_nEhAVWnYZcIiiqp8CxgqEoRjfGhRB_IRt4wSpAxd5oyWb-MkChE58ww",
+         "scope" : "GOOGLE",
+         "types" : [ "restaurant", "food", "point_of_interest", "establishment" ],
+         "vicinity" : "557 East Peltason Drive, Irvine"
+      },
+      {
+         "geometry" : {
+            "location" : {
+               "lat" : 33.6471239,
+               "lng" : -117.8421325
+            }
+         },
+         "icon" : "https://maps.gstatic.com/mapfiles/place_api/icons/generic_business-71.png",
+         "id" : "741f2a3f764bb2982ed898ac5ed17c158b524c8d",
+         "name" : "Cornerstone Catering",
+         "place_id" : "ChIJVVVVBQ7e3IARbiqdzbXPBsI",
+         "reference" : "CmRSAAAAwIt_SZpunMG711nrlR6is0RlK_GV_KK5ZNwtUsPWhQOenisZQdnvnh5BD6iBNWZG11j1zWhy9j_kmZX7iv6fekOPeFRLFke-joo_2-hpTCfTk7P1GERQF_9NtPD-BqXxEhBWiQAdTcfzY8ZhCIXp_PsHGhQbTnlLI-woZpd4b51_pZKTrpT3Mg",
+         "scope" : "GOOGLE",
+         "types" : [ "food", "point_of_interest", "establishment" ],
+         "vicinity" : "University of Ca Irvine, Irvine"
+      },
+      {
+         "geometry" : {
+            "location" : {
+               "lat" : 33.646046,
+               "lng" : -117.8491348
+            },
+            "viewport" : {
+               "northeast" : {
+                  "lat" : 33.6467551,
+                  "lng" : -117.8490934
+               },
+               "southwest" : {
+                  "lat" : 33.64391869999999,
+                  "lng" : -117.849259
+               }
+            }
+         },
+         "icon" : "https://maps.gstatic.com/mapfiles/place_api/icons/cafe-71.png",
+         "id" : "8d408c8f178bdf8a174b66175b9affc908cc4633",
+         "name" : "Cafe Med",
+         "place_id" : "ChIJIbr8qRbe3IAR9cvzkB_5EkY",
+         "reference" : "CmRRAAAAuTfwMl8cm8_L8Ghd31ZudI4L-xID89VDjD_y5PLJP65Leh5-Plgw8nO1EwjGWFloUY7-EKnxWk-0irIY03LQWntThYUVo9de-giCkjpwMb_4mu0Jx8S16vHMXQJz6dEPEhAoSvAW0ZQs3eMiJkqgoFcyGhQsJwh9fPFBoeiU_mwD0wr_m4YJfA",
+         "scope" : "GOOGLE",
+         "types" : [ "cafe", "food", "point_of_interest", "establishment" ],
+         "vicinity" : "Health Sciences Road, Irvine"
+      },
+      {
+         "geometry" : {
+            "location" : {
+               "lat" : 33.6448364,
+               "lng" : -117.8368113
+            },
+            "viewport" : {
+               "northeast" : {
+                  "lat" : 33.64492825,
+                  "lng" : -117.8347173
+               },
+               "southwest" : {
+                  "lat" : 33.64456085,
+                  "lng" : -117.8375093
+               }
+            }
+         },
+         "icon" : "https://maps.gstatic.com/mapfiles/place_api/icons/restaurant-71.png",
+         "id" : "178de55531b358117c7e4e5cdfb5efd7f1fb21e1",
+         "name" : "Pippin Commons",
+         "opening_hours" : {
+            "open_now" : true,
+            "weekday_text" : []
+         },
+         "photos" : [
+            {
+               "height" : 1520,
+               "html_attributions" : [
+                  "\u003ca href=\"https://maps.google.com/maps/contrib/109826819420519507085/photos\"\u003eGumaro Perez\u003c/a\u003e"
+               ],
+               "photo_reference" : "CoQBdwAAAGnwM1Sud-ugnjQnoY7OwXZyT5Iuu8aFysYyM7REcwlsKXcDLfOgQou-RXUdiOyKRa6U2RJsAWLcixuCfU12HrOf-WEPq72dfX4DQNB3w7wLpOV-h4NUXA04VhofS4Jpx3OBjyFDRyQg1ZITcMFCqgUih-NKCG8DsGiTmQB6VHDbEhA5jnGubff85CaC1ED0_mK3GhRERFxl5goBEWo_iMuwBAyIOXqKOw",
+               "width" : 2688
+            }
+         ],
+         "place_id" : "ChIJ_y45swje3IARnjgP_yUBoqU",
+         "rating" : 4,
+         "reference" : "CmRSAAAAU54CAWgLDo7IF_aIndg1IopFGQdSyK3gM9ww9cTdJEcX6_k7YXZtv45yK2NHiI4CophG89oBIWRjKq7PwpdsZHPnqE8U9n_I8Qb2JkRGDpAoN1Ml73Lby0nthf8OUmsmEhBpj-cn-Nxc71zqd3bcpsHCGhQftG4wUnEamgmElfVd2fUn1c1F_A",
+         "scope" : "GOOGLE",
+         "types" : [ "restaurant", "food", "point_of_interest", "establishment" ],
+         "vicinity" : "531 East Peltason Drive, Irvine"
+      },
+      {
+         "geometry" : {
+            "location" : {
+               "lat" : 33.646874,
+               "lng" : -117.838394
+            },
+            "viewport" : {
+               "northeast" : {
+                  "lat" : 33.64751660000002,
+                  "lng" : -117.83822045
+               },
+               "southwest" : {
+                  "lat" : 33.64665979999999,
+                  "lng" : -117.83845185
+               }
+            }
+         },
+         "icon" : "https://maps.gstatic.com/mapfiles/place_api/icons/cafe-71.png",
+         "id" : "7b35a6cac9b72f2c7212c6e4f7a3bc9868e25801",
+         "name" : "Starbucks",
+         "opening_hours" : {
+            "open_now" : true,
+            "weekday_text" : []
+         },
+         "place_id" : "ChIJkUwb3Q7e3IARQbly4vegNAg",
+         "price_level" : 2,
+         "reference" : "CmRRAAAACp_qKGTi2JJWBtzQv68uS3ZS0VYQk1FTFDbh7zRJG8bZGDok9clTzx6q5kP2i1cbZrIWglScb5uHNYSESoLY0bDpVhlBOZuSICJ4KX8h5UnJ7wYBSi83ChSlxIkW4bllEhAiExtU7ej4_ipQ2O9HkVxBGhSFiUg6gtJ28qTXTXZdImm2q2lmYw",
+         "scope" : "GOOGLE",
+         "types" : [ "cafe", "food", "point_of_interest", "establishment" ],
+         "vicinity" : "Paul Merage, School of Business, 4293 Pereira Drive, Irvine"
+      },
+      {
+         "geometry" : {
+            "location" : {
+               "lat" : 33.6399367,
+               "lng" : -117.8542793
+            },
+            "viewport" : {
+               "northeast" : {
+                  "lat" : 33.6408223,
+                  "lng" : -117.8530589
+               },
+               "southwest" : {
+                  "lat" : 33.6396415,
+                  "lng" : -117.8546861
+               }
+            }
+         },
+         "icon" : "https://maps.gstatic.com/mapfiles/place_api/icons/cafe-71.png",
+         "id" : "136c5d9027ae78c7e81cd5265154b35db3a8e112",
+         "name" : "Starbucks",
+         "opening_hours" : {
+            "open_now" : true,
+            "weekday_text" : []
+         },
+         "photos" : [
+            {
+               "height" : 3024,
+               "html_attributions" : [
+                  "\u003ca href=\"https://maps.google.com/maps/contrib/116098250448347009668/photos\"\u003eChristopher Andrew Hules\u003c/a\u003e"
+               ],
+               "photo_reference" : "CoQBdwAAAK9xF7sE3AeH72EsuX07eNr_269Xb0LlmDgCGL-cq_kOgISc7UOGI5pRUasBxfrg_CIUfN640WwwQDG3KMoudBbIbD1Bm1FY5-J2IfLt3liRA6AoTo5LKGV_LOAUI8gtPf-Daf7rn-9MKQBR6Tq58NAaad7iNEFFhgManC4sR9G6EhCCEq3nuA04OgoV4RvYck5iGhTA6pk1j29Du3Ukx4uIVVaa-6cNHQ",
+               "width" : 4032
+            }
+         ],
+         "place_id" : "ChIJAZN93Rfe3IAR3FYbo6_XKmI",
+         "price_level" : 2,
+         "rating" : 4,
+         "reference" : "CmRRAAAA5LgbCws1jF86hwl1t87cXrcAvyittF0pHNnCpYfblx5w8uQoxbZMer_3ak4n7lFPyS83RTH2QPCqGOOd_qv5_Xwy5Bf5-DAWKUBaKrH9B3Faxe3RwfCmHUte0ctMjZ0JEhCB3X6zO3B7-BMSYhHOCnonGhRykJSFSQ4G28xAaJ1SIjb4ZA_OsQ",
+         "scope" : "GOOGLE",
+         "types" : [ "cafe", "food", "store", "point_of_interest", "establishment" ],
+         "vicinity" : "5171 California Avenue #120, Irvine"
+      },
+      {
+         "geometry" : {
+            "location" : {
+               "lat" : 33.6484744,
+               "lng" : -117.8419705
+            }
+         },
+         "icon" : "https://maps.gstatic.com/mapfiles/place_api/icons/cafe-71.png",
+         "id" : "d16393e26aeb595ba3d4a6cfb2a6da19b9d45752",
+         "name" : "Starbucks",
+         "opening_hours" : {
+            "open_now" : true,
+            "weekday_text" : []
+         },
+         "photos" : [
+            {
+               "height" : 4000,
+               "html_attributions" : [
+                  "\u003ca href=\"https://maps.google.com/maps/contrib/115798929969755409188/photos\"\u003eArman Karabakhtsyan\u003c/a\u003e"
+               ],
+               "photo_reference" : "CoQBdwAAAEVGb25WOGikmD1PvYz3pdR8po3XWctPMWb_F8y9R2XOjR3NkUOSVFY-hgRslltsMeUPrV0vcaeayU1Dk9nual7SQJYcYDmyC9vKT9mHKoxIBnV9-3NA8E0uT-mv2fCtmMi8s2eZi4sCbqsd54LY5VZyy-r38mrUsxh9sshnCQXEEhBHLdZNFXg67zY07o-1xrEuGhQwiKjmJBcM51arQaKrRHGjYbKa1g",
+               "width" : 3000
+            }
+         ],
+         "place_id" : "ChIJazxW3A3e3IAR7hSM2ciPgvc",
+         "price_level" : 2,
+         "rating" : 4,
+         "reference" : "CmRSAAAA7SEV3q65Qoz1YyhpLyG__U0GGoZimQQA4D7j72iC0Iv-Ci-d4Il4J97teqFLBRDDvfajcMlkD4l8Il8wWtWkbiB9bwkcW181fQGyW8MEL2LmEdgmJInfb0RM_9rO7p8AEhADf6xXCleSQ-DtqDSrWrpXGhSewTGqEMD8Ps4Zjp0ULHwz_Qjv8A",
+         "scope" : "GOOGLE",
+         "types" : [ "cafe", "food", "store", "point_of_interest", "establishment" ],
+         "vicinity" : "203 B Student Ctr, Irvine"
+      },
+      {
+         "geometry" : {
+            "location" : {
+               "lat" : 33.646942,
+               "lng" : -117.8377592
+            },
+            "viewport" : {
+               "northeast" : {
+                  "lat" : 33.64722099999999,
+                  "lng" : -117.83765705
+               },
+               "southwest" : {
+                  "lat" : 33.64684899999999,
+                  "lng" : -117.83779325
+               }
+            }
+         },
+         "icon" : "https://maps.gstatic.com/mapfiles/place_api/icons/restaurant-71.png",
+         "id" : "abdfd992fce15c1924aa610b0f882b9322a67be4",
+         "name" : "Au Bon Pain",
+         "opening_hours" : {
+            "open_now" : true,
+            "weekday_text" : []
+         },
+         "place_id" : "ChIJ9fhZxQ7e3IARwndKzY0A77E",
+         "reference" : "CmRSAAAAglD0Fc0f7SFYkLkn4gBgK6vSab_t8weVOVxyPG2oKnMkYytYzCqejJaz87ki9EbxOynuZ8IhvVmjulRRfFFlSaSV-ttkTcIt1ZAAadovymwYzVfBke8vtF8i9RPY2ZPpEhChjKPtjLIwd9IU9gjCROpaGhSDecv9C-8KvR_XbEBZsp97QziW7A",
+         "scope" : "GOOGLE",
+         "types" : [ "restaurant", "food", "point_of_interest", "establishment" ],
+         "vicinity" : "4208 Pereira Drive, Irvine"
+      },
+      {
+         "geometry" : {
+            "location" : {
+               "lat" : 33.6487207,
+               "lng" : -117.8420611
+            },
+            "viewport" : {
+               "northeast" : {
+                  "lat" : 33.64941595,
+                  "lng" : -117.8412655
+               },
+               "southwest" : {
+                  "lat" : 33.64848895,
+                  "lng" : -117.8423263
+               }
+            }
+         },
+         "icon" : "https://maps.gstatic.com/mapfiles/place_api/icons/restaurant-71.png",
+         "id" : "8465292121c5b4742e3bfeac119c18282e730ab0",
+         "name" : "Bene's Pizza and Pasta",
+         "place_id" : "ChIJMdAN7g3e3IARpv-P8hcotqk",
+         "reference" : "CmRSAAAAgr8I8VOI1QCEQHrMA0jFIeUrVzTZDpbZd-63M0d8U400__J4ffMc7T381Vjs89ho-DlqKpWh9Gjr2HiIc7zxcjG-vhz8235ROuMhkgw3FvA6KakJAEfB_k21ZjUIKZEmEhBQdupRmR_bixcTyrQjNYyeGhRw8rX2YZ4pLEdfLEYY-ZLR8UWTew",
+         "scope" : "GOOGLE",
+         "types" : [ "restaurant", "food", "point_of_interest", "establishment" ],
+         "vicinity" : "531 Pereira Drive, Irvine"
+      },
+      {
+         "geometry" : {
+            "location" : {
+               "lat" : 33.64882,
+               "lng" : -117.842084
+            }
+         },
+         "icon" : "https://maps.gstatic.com/mapfiles/place_api/icons/restaurant-71.png",
+         "id" : "a923fd9f0b6f614fa5efc101abec117fdde6bb28",
+         "name" : "Jamba Juice UC Irvine",
+         "opening_hours" : {
+            "open_now" : true,
+            "weekday_text" : []
+         },
+         "photos" : [
+            {
+               "height" : 289,
+               "html_attributions" : [
+                  "\u003ca href=\"https://maps.google.com/maps/contrib/116772801737235365855/photos\"\u003eJamba Juice UC Irvine\u003c/a\u003e"
+               ],
+               "photo_reference" : "CoQBdwAAAL10iLvLmLEGu_4Bq-jCRWa0qlpRAFkkqKab-IybrN45sgNw7RsNCVX6tbiEGgRer_TLdoO6iVqjKXQYGToOK0oXcwpiTk_DceuPnDwvYu2pUgupEPgKnFPzRpzdLCLgIplURA6xPM9PePRQ-uDEPcI-gt0vOqmxtLeJzV_wz6R7EhDGbtohQviBW--4KuxDjlysGhRWBFaeN2fFm3LrWEt_7yyAOLvQTA",
+               "width" : 512
+            }
+         ],
+         "place_id" : "ChIJUZ4X7Q3e3IARSl0ZbivzRuk",
+         "price_level" : 1,
+         "reference" : "CmRSAAAAsVCWnNgaD7ezWWe08U55g8wfi1kNxj9tavtssXEQVMnE26L66wjJqCOchfuO250KuT_MVaF20JoX-5nhB2MYtj13iD0KLr3MZ5iJwx--CRusmluosvvt3nPgl5BlXRXfEhAXWyji-FAzmRX8f4z25dJLGhTtYiym_ZbcyBcx3lwvN1IBChrZeg",
+         "scope" : "GOOGLE",
+         "types" : [ "restaurant", "food", "point_of_interest", "establishment" ],
+         "vicinity" : "311A C Student Center, Irvine"
+      },
+      {
+         "geometry" : {
+            "location" : {
+               "lat" : 33.6488056,
+               "lng" : -117.8419841
+            }
+         },
+         "icon" : "https://maps.gstatic.com/mapfiles/place_api/icons/generic_business-71.png",
+         "id" : "fea9a33e214c8bd4088983349a2657a2e94bbb45",
+         "name" : "UCI Hospitality & Dining Services",
+         "opening_hours" : {
+            "open_now" : true,
+            "weekday_text" : []
+         },
+         "place_id" : "ChIJM7Ti6Aje3IAR74FkUbIx-iU",
+         "reference" : "CmRRAAAAV-f9j7ce4OHnwPUQmJgiRQFOXBgMYJ4q40C8FHrPIO-tCbzrg3E15gfS6VP__JSPDZCexIQTugXpjjId3G45lDoSQ6FwiXB1IcQzlAhnS9BsdUsAuSyMTLGlKJNbiyt_EhBJZlDFGiBB6aow8zVIVRhuGhR_Ht7dIYplfRg7TJz9EhpEq-brBA",
+         "scope" : "GOOGLE",
+         "types" : [ "food", "point_of_interest", "establishment" ],
+         "vicinity" : "535 East Peltason Drive, Irvine"
+      },
+      {
+         "geometry" : {
+            "location" : {
+               "lat" : 33.6489369,
+               "lng" : -117.8423074
+            },
+            "viewport" : {
+               "northeast" : {
+                  "lat" : 33.64961579999999,
+                  "lng" : -117.8415307
+               },
+               "southwest" : {
+                  "lat" : 33.64871059999999,
+                  "lng" : -117.8425663
+               }
+            }
+         },
+         "icon" : "https://maps.gstatic.com/mapfiles/place_api/icons/restaurant-71.png",
+         "id" : "2cb01cc907288f053a8989dfc2e874672979b9bb",
+         "name" : "Anthill Pub & Grille",
+         "opening_hours" : {
+            "open_now" : true,
+            "weekday_text" : []
+         },
+         "photos" : [
+            {
+               "height" : 2448,
+               "html_attributions" : [
+                  "\u003ca href=\"https://maps.google.com/maps/contrib/104140515264100853531/photos\"\u003eLucas Okado\u003c/a\u003e"
+               ],
+               "photo_reference" : "CoQBdwAAAFBGhzNXwJwezxieB_7fND-5-JJJGw_5BghoWMseN3R6mrufjT_zTP6l3tkRAuk6QsR38J9NwH0MLKTRMeqz1azPijG0zfdC913-9aecDbbd1uqElxBQHteSWAX0jQCVGv-7kjW0FBfKfd6hpZE6Orytd6pqhilqjTzmE0fkftz4EhDqG3umtPeN-JYgJys08no5GhQykFytrty6qeWa_ne0U-aFZ4TOdQ",
+               "width" : 3264
+            }
+         ],
+         "place_id" : "ChIJxyvW9A3e3IARey5JlcFgzVQ",
+         "price_level" : 2,
+         "rating" : 4.3,
+         "reference" : "CmRRAAAANNDZ2e8hjGih_ZBx6TrtXQs7Um7RALJu2ICxdi1ZQC5hEgTQyZZNgm0bk2jH8QcFM7xvo5m_aN8WLiYa-nspIKgW1IQyovGevOR_Hywwu2BlUdcTd14mKovuaZGavc5uEhCSF2h-GQ4B23G4wpMKV5jdGhSV7ZaJDvrlsPgUtfFe2MHIYsVfeQ",
+         "scope" : "GOOGLE",
+         "types" : [ "bar", "restaurant", "food", "point_of_interest", "establishment" ],
+         "vicinity" : "215 Pereira Drive, Irvine"
+      },
+      {
+         "geometry" : {
+            "location" : {
+               "lat" : 33.6450323,
+               "lng" : -117.8349666
+            }
+         },
+         "icon" : "https://maps.gstatic.com/mapfiles/place_api/icons/shopping-71.png",
+         "id" : "9c65a61278d1f147d903456baf13d4b3de80e508",
+         "name" : "Coffee House",
+         "opening_hours" : {
+            "open_now" : false,
+            "weekday_text" : []
+         },
+         "place_id" : "ChIJ9w99kAje3IARpZ76F4F5-aU",
+         "reference" : "CmRSAAAAjFWW11TDtLiPBvTJs6MgABu1a8FtoSOIl3FNvIxIouLjRT391dT-RPNm5ATgzqWoNrpimOh7R7A-ScWp4qzUiTWB0rZxWoOvBOJTYsVwiQ657JAninw8PsY3shDwkbAjEhASBeMQyAq_kMIvMWyjMgEgGhT7IGQGcRbWvgmCToMgY2hytfy37A",
+         "scope" : "GOOGLE",
+         "types" : [ "food", "store", "point_of_interest", "establishment" ],
+         "vicinity" : "Irvine"
+      }
+   ],
+   "status" : "OK"
+};
+
 		
 		
-	</body>
-	<script>
-	<!-- Our JS will go here-->
-	<!-- API key is: AIzaSyD5A1HkR6gNGnSAe37CJ8grb3I7REz8suQ -->
-		$(document).ready(function(){
-			$('#title').text('Hello World!!!');
-			});
+		//load restaurant locations and put them in locationList
 		var locationList = []
-		
-		console.log('Page almost loaded!');
-		
-		function handler(JSONdata){
-			console.log(JSONdata);
-			}
-		
-		$.getJSON('https://crossorigin.me/https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=33.640,-117.844&rankby=distance&types=food&key=AIzaSyD5A1HkR6gNGnSAe37CJ8grb3I7REz8suQ', 
-			function(data){
-				console.log('stuff happening.../n');
-				console.log(data);
-				console.log(data.results)
+
+		function populateLocations(data){
+				console.log('populateLocations Called');
 				//UCI's location hard-coded as a starting pt
 				
 				//loop through data received
 				for (var i = 0; i < data.results.length ; i++){
-					console.log(data.results[i].name);
-					console.log(data.results[i].geometry.location.lat);
-					console.log(data.results[i].geometry.location.lng);
 					locationList.push([data.results[i].name,
 										data.results[i].geometry.location.lat, 
 										data.results[i].geometry.location.lng]);
+					console.log("Current array: ", locationList[i]);
 				}
+		}
+		
+		populateLocations(testData);
+		
+		/*
+		$.getJSON('https://crossorigin.me/https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=33.640,-117.844&rankby=distance&types=food&key=AIzaSyBLi3xmU0ldG-blzINcr9D4RA7rl1Its4o', 
+			
+				
+		});
+		*/
+			
+		//inclusive rand function
+		function getRandomInt(min, max) {
+			return Math.floor(Math.random() * (max - min + 1)) + min;
+		}
+		
+		//MAP Settings
+		// When the user clicks the marker, an info window opens.
+		var UCI = {lat: 33.640, lng: -117.844}, 
+			markers = [], 
+			map, 
+			infowindow,
+			contentString = 'UCI: Where stuff happens...';
+	
+		function initMap() {
+			console.log('InitMap Called');
+			map = new google.maps.Map(document.getElementById('map'), {
+			zoom: 15,
+			center: UCI
+			});	
+
+			addMarkerAndInfo(UCI, contentString);
+		}
+		
+		//might only need to make function call on LAST marker when 'deleting' markers
+		function setMapOnAll(map) {
+			for (var i = 0; i < markers.length; i++) {
+				markers[i].setMap(map);
+			}
+		}
+		
+		function addMarker(location){
+		//dont forget to display the title
+			var temp_marker = new google.maps.Marker({
+				position: location,
+				map:map
+			});
+			markers.push(temp_marker);
+		}
+		
+		function addInfoWindow(contentString){
+			infowindow = new google.maps.InfoWindow({
+				content: contentString
+			});
+		}
+			
+		function addMarkerAndInfo(location, contentString){			
+			//add new stuff
+			addMarker(location);
+			addInfoWindow(contentString);
+			
+			//make infoWindow popup when marker clicked
+			markers[markers.length -1].addListener('click', function() {
+				infowindow.open(map, markers[markers.length -1]);
+			});
+		}
+			
+		function findRandRestaurant(){
+			//get rand restaurant from locationList
+			var temp = locationList[getRandomInt(0, locationList.length -1 )];
+			if (temp){
+			//clear previous markers
+			setMapOnAll(null);
+			
+			//add marker to map
+			addMarkerAndInfo(
+				{lat: temp[1], lng: temp[2]}, 	//location
+				temp[0]							//contentstring
+			);
+				
+			$("#resultText").text("Try: " + temp[0]);
+			
+			}
+			else{
+				console.log('Nothing to  see here');
+			}
+		}
+		
+		//bind click event to button
+		$('#findRestButton').click(function(){
+				findRandRestaurant();
 		});
 		
-	</script>
+
+		
+		</script>
+		
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBLi3xmU0ldG-blzINcr9D4RA7rl1Its4o&callback=initMap">
+    </script>
+	</body>
 	
 </html>
