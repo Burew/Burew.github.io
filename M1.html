@@ -27,13 +27,14 @@
 	  
 		body{
 			font-family: Arial;
+			background-image: url("http://www.siwallpaperhd.com/wp-content/uploads/2015/06/computer_theme_light_blue_wallpaper_hd_5.jpg");
 		}
 		
 		#title{
 		width:100%;
 		text-align:center;
-		margin-top:20px;
-		margin-bottom:30px;
+		margin-top:10px;
+		margin-bottom:10px;
 		}
 		
 		h1{
@@ -59,8 +60,6 @@
 		<br/>
 		<div id = 'map'></div> <!-- map will go here-->
 		<br/>
-		
-		<br/>
 		<div id = "centered">
 			<input type="button" class="btn btn-lg btn-info" value="Suggest a place!" id="findRestButton">
 		</div>
@@ -71,28 +70,46 @@
 		var locationList = [];
 		
 		//Creating the map
-		var UCI = {lat: 33.640, lng: -117.844}, 
+		var startPosition = {lat: 33.640, lng: -117.844}, //this is UCI's location
 			markers = [], 
 			map, 
 			infowindow,
-			contentString = 'UCI: Where stuff happens...';
-	
+			contentString = 'UCI, where stuff happens';
+		
 		function initMap() {
 			console.log('InitMap Called');
 			map = new google.maps.Map(document.getElementById('map'), {
 			zoom: 15,
-			center: UCI
+			center: startPosition
 			});	
-
-			addMarkerAndInfo(UCI, contentString);
-			loadPlacesFromAPI();
+			
+			if (navigator.geolocation) {
+				navigator.geolocation.getCurrentPosition(function(position) {
+				startPosition = {
+					lat: position.coords.latitude,
+					lng: position.coords.longitude
+				};
+				
+				map.setCenter(startPosition);
+				addMarkerAndInfo(startPosition, contentString);
+				loadPlacesFromAPI(startPosition);
+				}, function() {
+					addMarkerAndInfo(startPosition, contentString);
+					loadPlacesFromAPI(startPosition);
+				});
+				console.log("Geolocation Finished!")
+			}
+			map.setCenter(startPosition);
+			addMarkerAndInfo(startPosition, contentString);
+			loadPlacesFromAPI(startPosition);
+			
 		}
 		
-		function loadPlacesFromAPI(){
-			console.log("loadPlaces called");
+		function loadPlacesFromAPI(startPosition){
+			console.log("loadPlaces called with a startPosition of: ", startPosition);
 			var service = new google.maps.places.PlacesService(map);
 			service.nearbySearch({
-				location: UCI,
+				location: startPosition,
 				radius: 1500, //in meters
 				type: ['food']
 			}, callback)
@@ -100,6 +117,7 @@
 		
 		function callback(data, status){
 			if (status === google.maps.places.PlacesServiceStatus.OK){
+				locationList = [];
 				for (var i = 0; i < data.length ; i++){
 					locationList.push([data[i].name,
 										data[i].geometry.location]);
@@ -131,7 +149,8 @@
 			});
 		}
 			
-		function addMarkerAndInfo(location, contentString){			
+		function addMarkerAndInfo(location, contentString){		
+			console.log("Add Marker,Info w/ a start point of: ", location);
 			//add new stuff
 			addMarker(location);
 			addInfoWindow(contentString);
@@ -153,16 +172,20 @@
 			var temp = locationList[getRandomInt(0, locationList.length - 1 )];
 			if (temp){
 			
-			//clear previous markers
-			setMapOnAll(null);
-			
-			//add marker to map
-			addMarkerAndInfo(
-				temp[1], 	//location
-				temp[0]		//contentstring
-			);
+				//clear previous markers
+				setMapOnAll(null);
 				
-			$("#resultText").text("Try: " + temp[0]);
+				//add marker to map
+				addMarkerAndInfo(
+					temp[1], 	//location
+					temp[0]		//contentstring
+				);
+				
+				//center map to new location
+				map.setCenter(temp[1]);
+				
+				//change result text
+				$("#resultText").text("Try: " + temp[0]);
 			}
 			
 			else{
