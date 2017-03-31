@@ -2,7 +2,9 @@
 <html>
 	<head>
 		<meta charset="UTF-8"> 
-		<title>MyApp</title>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>FindMeFood</title>
 			<!--Any external file links, scripts/css gohere -->
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 		
@@ -16,286 +18,62 @@
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 		
 	</head>
-	<style>
+
+	<link rel="stylesheet" type="text/css" href="main.css">
+	<link rel="stylesheet" media="screen and (max-width: 767px)" href="modal.css">
 	
-	      /* Optional: Makes the sample page fill the window. */
-		html, body {
-			height: 80%;
-			margin: 0;
-			padding: 0;
-		}
-	  
-		body{
-			font-family: Arial;
-			background-image: url("http://www.designbolts.com/wp-content/uploads/2014/03/Light-HD-Background1.jpg");
-			background-size: cover;
-			background-repeat: no-repeat;
-		}
-		
-		#title{
-		width:100%;
-		text-align:center;
-		margin-top:10px;
-		margin-bottom:10px;
-		}
-		
-		h1{
-			text-align:center;
-		}
-		
-		#map {
-        height: 100%;
-		width: 70%;
-		margin-left: 10%;
-		}
-	  
-		#findRestButton{
-		display: inline-block;
-		font-family: Verdana, Geneva, sans-serif;
-		margin: 10px;
-		}
-		
-		#centered{
-			width: 400px;
-			text-align: center;
-			margin-left: auto;
-			margin-right: auto;
-		}
-		
-		#floating-panel {
-			position: absolute;
-			top: 25%;
-			left: 25%;
-			z-index: 5;
-			background-color: #fff;
-			padding: 5px;
-			border: 1px solid #999;
-			text-align: center;
-			font-family: 'Roboto','sans-serif';
-			line-height: 30px;
-			padding-left: 10px;
-		}
-		
-		#right-panel {
-			position: absolute;
-			right: 0;
-			top: 20%;
-			z-index: 1;
-			height: 60%;
-			width: 20%;
-			overflow: auto;
-		}
-		
-		#right-panel select, #right-panel input {
-			font-size: 15px;
-		}
-
-		#right-panel select {
-			width: 100%;
-		}
-
-		#right-panel i {
-			font-size: 12px;
-		}
-	</style>
 	<body>
 		<!-- class="label label-info" -->
-		<h1 id="title"><span class="label label-default"> FindMeFood </span></h1>
-		<h1 id = "resultText">Click the button below to find a place to eat</h1>
-		<br/>
-		<div id = 'map'></div> <!-- map will go here-->
-		<br/>
-		<div id = "centered">
-			<input type="button" class="btn btn-lg btn-info" value="Suggest a place!" id="findRestButton">
-			<input type="button" class="btn btn-lg btn-default" value="Navigate?" id = "navigateButton">
-		</div>
-		
-		<div id = "floating-panel">
-		<select id="mode">
-		<option value="DRIVING">Driving</option>
-		<option value="WALKING">Walking</option>
-		<option value="BICYCLING">Bicycling</option>
-		<option value="TRANSIT">Transit</option>
-		</select>	
-		</div>
-		
-		<div id="right-panel"></div>
-	
-		<script>
-		
-		//load restaurant locations and put them in locationList
-		var locationList = [];
-		
-		//Creating the map
-		var startPosition = {lat: 33.640, lng: -117.844}, //this is UCI's location
-			markers = [], 
-			map, 
-			infowindow,
-			contentString = 'UCI, where stuff happens';
-		
-		function initMap() {
-			console.log('InitMap Called');
-			map = new google.maps.Map(document.getElementById('map'), {
-			zoom: 15,
-			center: startPosition
-			});	
+		<div class="container-fluid" style="height: 100%;">
+			<div class="row">
+				<div class="col-xs-12 col-sm-4 col-sm-offset-4 text-center">
+					<h1 id="title"><span class="label label-default"> FindMeFood </span></h1>
+				</div>
+			</div>
 			
-			if (navigator.geolocation) {
-				navigator.geolocation.getCurrentPosition(function(position) {
-				startPosition = {
-					lat: position.coords.latitude,
-					lng: position.coords.longitude
-				};
+			<div class="row">
+				<div class="col-xs-12 col-sm-8 col-sm-offset-2 text-center">
+					<h3 id = "resultText">Click buttons below to get started</h3>
+				</div>
+			</div>
+			
+			<!-- Need to specify height for each ancestor of map for it to display properly -->
+			<div class="row" style="height: 100%;">
+			
+				<!-- Displays Map -->
+				<div class= "col-xs-12 col-sm-6 col-sm-offset-3" style="height: 100%; padding:0px;">
+					<div id = "map" ></div> <!-- map will go here-->
+					<div id = "floating-panel">
+						<select id="mode">
+						<option value="DRIVING">Driving</option>
+						<option value="WALKING">Walking</option>
+						<option value="BICYCLING">Bicycling</option> 	
+						<option value="TRANSIT">Transit</option>
+						</select>	
+					</div>	
+				</div>
 				
-				//reset markers
-				markers = [];
-				map.setCenter(startPosition);
-				addMarkerAndInfo(startPosition, contentString);
-				loadPlacesFromAPI(startPosition);
-				console.log("First load done");
-				return;
-				}, function() {
-					console.log("User denied geolocation request");
-				});
-				console.log("Geolocation Finished!")
-			}
-			map.setCenter(startPosition);
-			addMarkerAndInfo(startPosition, contentString);
-			loadPlacesFromAPI(startPosition);
-			console.log("Second load done")
-		}
-		
-		function loadPlacesFromAPI(startPosition){
-			console.log("loadPlaces called with a startPosition of: ", startPosition);
-			var service = new google.maps.places.PlacesService(map);
-			service.nearbySearch({
-				location: startPosition,
-				radius: 1500, //in meters
-				type: ['restaurant']
-			}, callback)
-		}
-		
-		function callback(data, status){
-			if (status === google.maps.places.PlacesServiceStatus.OK){
-				locationList = [];
-				for (var i = 0; i < data.length ; i++){
-					locationList.push([data[i].name, data[i].geometry.location]);
-					console.log("Current array: ", locationList[i]);
-				}
-			}
-		}
-		
-		//might only need to make function call on LAST marker when 'deleting' markers
-		function setMapOnAll(map) {
-			for (var i = 0; i < markers.length; i++) {
-				markers[i].setMap(map);
-			}
-		}
-		
+				<!-- Displays directions -->
+				<div id = "myModal" class= "col-sm-3">
+					<div id="right-panel"></div>
+					<span id="close">&times;</span>
+				</div>
+			</div>
 			
-		function addMarkerAndInfo(location, contentString){		
-			console.log("Add Marker,Info w/ a start point of: ", location);
-			//add markers
-			markers.push(new google.maps.Marker({
-				position: location,
-				map:map
-				})
-			);
-			
-			//add infowindow
-			infowindow = new google.maps.InfoWindow({
-				content: contentString
-			});
-			
-			//make infoWindow popup when marker clicked
-			markers[markers.length -1].addListener('click', function() {
-				infowindow.open(map, markers[markers.length -1]);
-			});
-		}
-			
-		function getRandomInt(min, max) {   //inclusive rand function
-			return Math.floor(Math.random() * (max - min + 1)) + min;
-		}
-		
-		function findRandRestaurant(){
-			//get rand restaurant from locationList
-			var temp = locationList[getRandomInt(0, locationList.length - 1 )];
-			if (temp){
-			
-				//clear previous markers
-				setMapOnAll(null);
+			<div class="row">
+				<div class="col-xs-12 text-center">
+					
+					<input type="button" class="btn btn-lg btn-info" value="Suggest a place!" id="findRestButton">
+					<input type="button" class="btn btn-lg btn-default" value="Navigate?" id = "navigateButton">
+					
+				</div>
+			</div>
 				
-				//add marker to map
-				addMarkerAndInfo(
-					temp[1], 	//location
-					temp[0]		//contentstring
-				);
-				
-				//center map to new location
-				map.setCenter(temp[1]);
-				
-				//display result text to user
-				$("#resultText").text("Try: " + temp[0]);
-			}
-			
-			else{
-				console.log('Nothing to see here');
-			}
-		}
-		
-		$('#findRestButton').click(function(){
-				findRandRestaurant();
-		});
-		
-		var directionsDisplay, directionsService;
+		</div> <!-- container fluid -->
 
-		function initMapDirections() {
-			directionsDisplay = new google.maps.DirectionsRenderer,
-			directionsService = new google.maps.DirectionsService;
-			directionsDisplay.setMap(map);
-			directionsDisplay.setPanel(document.getElementById('right-panel'));
-			calculateAndDisplayRoute(directionsService, directionsDisplay);
-			
-			document.getElementById('mode').addEventListener('change', function() {
-			calculateAndDisplayRoute(directionsService, directionsDisplay);
-			});
-			
-			$("#right-panel").css("background-color", "#FCFBE3");
-			
-		}
-		
-		function calculateAndDisplayRoute(directionsService, directionsDisplay) {
-			var selectedMode = document.getElementById('mode').value;
-			
-			directionsService.route({
-			origin: markers[0].position,  
-			destination: (markers[markers.length -1 ]).position,
-			// Note that Javascript allows us to access the constant
-			// using square brackets and a string value as its
-			// "property."
-			travelMode: google.maps.TravelMode[selectedMode]
-			}, function(response, status) {
-			if (status == 'OK') {
-			directionsDisplay.setDirections(response);
-			} else {
-			window.alert('Directions request failed due to ' + status);
-			}
-			});
-		}
-				
-		$('#navigateButton').click(function(){
-			if (directionsDisplay){
-				calculateAndDisplayRoute(directionsService, directionsDisplay);
-			}
-			else{
-				initMapDirections();
-			}
-		});
-		
-		
-	</script>
+	<script src="Map.js"></script> 
 	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBLi3xmU0ldG-blzINcr9D4RA7rl1Its4o&libraries=places&callback=initMap" async defer></script>	
-
+	<script src="modal.js"></script>
 	</body>
 		
 </html>
