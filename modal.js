@@ -46,7 +46,7 @@ window.onload = function(){ //only run after stuff loaded
 			//reset modal to initial settings
 			modal.className = "col-sm-3";
 			modalContent.classList.remove("modal-content");
-			modalExitButton.style.display = "inline";
+			modalExitButton.style.display = "none";
 			
 		}
 		return;
